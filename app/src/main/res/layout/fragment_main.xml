@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.PlaceholderFragment">
+
+    <SeekBar
+        android:id="@+id/trackSeek_sk"
+        android:layout_width="375dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/importTrack_pb" />
+
+    <TextView
+        android:id="@+id/TrackName_tb"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="placeHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lastTime_tb"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text="00:00:00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrackName_tb" />
+
+    <Button
+        android:id="@+id/importTrack_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Import"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lastTime_tb" />
+
+    <Button
+        android:id="@+id/seek_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seek"
+        app:layout_constraintBottom_toBottomOf="@+id/sec_tb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sec_tb"
+        app:layout_constraintTop_toTopOf="@+id/sec_tb" />
+
+    <EditText
+        android:id="@+id/hour_tb"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="00"
+        app:layout_constraintEnd_toStartOf="@+id/min_tb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_tb" />
+
+    <EditText
+        android:id="@+id/min_tb"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:gravity="center|center_horizontal"
+        android:inputType="number"
+        android:text="00"
+        app:layout_constraintBottom_toBottomOf="@+id/hour_tb"
+        app:layout_constraintEnd_toStartOf="@+id/sec_tb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/hour_tb"
+        app:layout_constraintTop_toTopOf="@+id/hour_tb" />
+
+    <EditText
+        android:id="@+id/sec_tb"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="00"
+        app:layout_constraintBottom_toBottomOf="@+id/min_tb"
+        app:layout_constraintEnd_toStartOf="@+id/seek_pb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/min_tb"
+        app:layout_constraintTop_toTopOf="@+id/min_tb"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/step_tb"
+        android:layout_width="46dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playpaue_pb" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/playpaue_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@android:drawable/ic_media_play"
+        app:layout_constraintBottom_toBottomOf="@+id/rew_pb"
+        app:layout_constraintEnd_toStartOf="@+id/adv_pb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rew_pb"
+        app:layout_constraintTop_toBottomOf="@+id/trackSeek_sk"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/adv_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@android:drawable/ic_media_ff"
+        app:layout_constraintBottom_toBottomOf="@+id/playpaue_pb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/playpaue_pb"
+        app:layout_constraintTop_toTopOf="@+id/playpaue_pb"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/rew_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_media_rew"
+        app:layout_constraintEnd_toStartOf="@+id/playpaue_pb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trackSeek_sk" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
