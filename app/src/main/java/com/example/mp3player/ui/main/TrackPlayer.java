@@ -72,6 +72,7 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                 int globalState = 1;
                 while (true) {
                     try {
+                        while(!playingTrack){}
                         if (mediaPlayer != null) {
                             if(!tracking){
                                 int mCurrentPosition = mediaPlayer.getCurrentPosition() / 1000;
