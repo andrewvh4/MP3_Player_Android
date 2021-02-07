@@ -2,10 +2,13 @@ package com.example.mp3player.ui.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.security.keystore.SecureKeyImportUnavailableException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,9 @@ import android.content.res.Resources;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -49,7 +55,6 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
-
         return fragment;
     }
 
@@ -63,6 +68,7 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         }
         pageViewModel.setIndex(index);
 
+        m_index = index;
         initializeMediaPlayer();
 
         new AsyncTask<Void, Void, Void>() {
@@ -72,7 +78,7 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                 int globalState = 1;
                 while (true) {
                     try {
-                        while(!playingTrack){}
+                        while(!playingTrack){Thread.sleep(1000);}
                         if (mediaPlayer != null) {
                             if(!tracking){
                                 int mCurrentPosition = mediaPlayer.getCurrentPosition() / 1000;
@@ -143,6 +149,13 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                 }
             });
 
+        mPrefs = getActivity().getSharedPreferences(String.valueOf(m_index), 0);
+        mEditor = mPrefs.edit();
+
+        selectedfile = Uri.parse(mPrefs.getString("CurrentFileUri", ""));
+        updateTimer(mPrefs.getInt("Time", 0));
+        prepareMediaFile();
+
         return view;
     }
 
@@ -163,12 +176,17 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
     private boolean playingTrack = false;
     private boolean tracking = false;
 
+    private int m_index;
+
+    private SharedPreferences mPrefs;
+    private SharedPreferences.Editor mEditor;
+
     @Override
     public void onClick(View v)
     {
         switch (v.getId()) {
             case R.id.importTrack_pb:
-                Intent intent = new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
+                Intent intent = new Intent().setType("*/*").setAction(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(Intent.createChooser(intent, "Select a File"), 123);
                 break;
             case R.id.seek_pb:
@@ -197,6 +215,8 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         }
     }
 
+    private int time;
+
     private void updateTimer(int timeMS)
     {
         String seconds = String.valueOf(timeMS /1000 % 60) ;
@@ -206,6 +226,9 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         if (minutes.length() == 1) minutes = "0" + minutes;
         if (hours.length() == 1) hours = "0" + hours;
         if(lastTime_tb != null) lastTime_tb.setText(hours + ":" + minutes + ":" + seconds);
+
+        mEditor.putInt("Time", timeMS).commit();
+        time = timeMS;
     }
 
     private Uri selectedfile;
@@ -213,13 +236,17 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
 
     private void prepareMediaFile()
     {
+        initializeMediaPlayer();
         try {
             mediaPlayer.setDataSource(getActivity().getApplicationContext(), selectedfile);
             mediaPlayer.prepare();
-        }
-        catch (Exception e) {}
+            TrackName_tb.setText(selectedfile.getPath().substring(selectedfile.getPath().lastIndexOf('/')+1));
 
-        initializeSeekbar();
+            initializeSeekbar();
+        }
+        catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
     }
 
     private void initializeMediaPlayer()
@@ -235,20 +262,8 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
     private void initializeSeekbar()
     {
         trackSeek_sk.setMax(mediaPlayer.getDuration()/1000);
-
-        //timer.schedule( new TimerTask()
-        //{
-        //    public void run() {
-        //
-        //    }
-        //}, 0, 60*(1000*1));
-
-        //exec.scheduleAtFixedRate(new Runnable() {
-        //    @Override
-        //    public void run() {
-        //
-        //    }
-        //}, 0, 1, TimeUnit.SECONDS);
+        mediaPlayer.seekTo(time);
+        trackSeek_sk.setProgress(time/1000);
     }
 
     @Override
@@ -257,7 +272,16 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 123 && resultCode == Activity.RESULT_OK) {
             selectedfile = data.getData(); //The uri with the location of the file
-            TrackName_tb.setText(selectedfile.getPath().substring(selectedfile.getPath().lastIndexOf('/')+1));
+
+            getActivity().grantUriPermission(getActivity().getPackageName(), selectedfile, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
+            // Check for the freshest data.
+            //noinspection WrongConstant
+            getActivity().getContentResolver().takePersistableUriPermission(selectedfile, takeFlags);
+            //getPrefs().setAlarmSoundUri(selectedfile.toString());
+
+            mEditor.putString("CurrentFileUri", selectedfile.toString()).commit();
+            time = 0;
             prepareMediaFile();
         }
     }
