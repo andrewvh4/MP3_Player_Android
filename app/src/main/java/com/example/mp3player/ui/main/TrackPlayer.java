@@ -171,10 +171,13 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                 startActivityForResult(Intent.createChooser(intent, "Select a File"), 123);
                 break;
             case R.id.seek_pb:
-
+                mediaPlayer.seekTo((((Integer.parseInt(String.valueOf(hour_tb.getText()))*60)+Integer.parseInt(String.valueOf(min_tb.getText())))*60 +Integer.parseInt(String.valueOf(sec_tb.getText()))) * 1000);
+                break;
+            case R.id.adv_pb:
+                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + Integer.parseInt(String.valueOf(step_tb.getText())) *1000);
                 break;
             case R.id.rew_pb:
-
+                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - Integer.parseInt(String.valueOf(step_tb.getText())) *1000);
                 break;
             case R.id.playpause_pb:
                 if(playingTrack)
@@ -189,9 +192,6 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                     playpause_pb.setImageResource(android.R.drawable.ic_media_pause);
                     playingTrack = true;
                 }
-                break;
-            case R.id.adv_pb:
-
                 break;
         }
     }
