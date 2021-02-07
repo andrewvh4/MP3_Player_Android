@@ -2,12 +2,14 @@ package com.example.mp3player.ui.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -53,6 +55,8 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
+
+        initializeMediaPlayer();
     }
 
     @Override
@@ -124,11 +128,13 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
             case R.id.playpause_pb:
                 if(playingTrack)
                 {
+                    mediaPlayer.pause();
                     playpause_pb.setImageResource(android.R.drawable.ic_media_play);
                     playingTrack = false;
                 }
                 else
                 {
+                    mediaPlayer.start();
                     playpause_pb.setImageResource(android.R.drawable.ic_media_pause);
                     playingTrack = true;
                 }
@@ -139,16 +145,32 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         }
     }
 
-    private String filePath;
+    private Uri selectedfile;
+    MediaPlayer mediaPlayer;
+
+    private void prepareMediaFile()
+    {
+        try {
+            mediaPlayer.setDataSource(getActivity().getApplicationContext(), selectedfile);
+            mediaPlayer.prepare();
+        }
+        catch (Exception e) {}
+    }
+
+    private void initializeMediaPlayer()
+    {
+        mediaPlayer = new MediaPlayer();
+        //mediaPlayer.setAudioAttributes();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 123 && resultCode == Activity.RESULT_OK) {
-            Uri selectedfile = data.getData(); //The uri with the location of the file
-            filePath = selectedfile.getPath();
-            TrackName_tb.setText(filePath.substring(filePath.lastIndexOf('/')+1));
+            selectedfile = data.getData(); //The uri with the location of the file
+            TrackName_tb.setText(selectedfile.getPath().substring(selectedfile.getPath().lastIndexOf('/')+1));
+            prepareMediaFile();
         }
     }
 }
