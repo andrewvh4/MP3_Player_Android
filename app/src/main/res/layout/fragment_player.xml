@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.PlaceholderFragment">
+    tools:context=".ui.main.TrackPlayer">
 
     <SeekBar
         android:id="@+id/trackSeek_sk"
@@ -117,10 +117,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playpaue_pb" />
+        app:layout_constraintTop_toBottomOf="@+id/playpause_pb" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/playpaue_pb"
+        android:id="@+id/playpause_pb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -138,11 +138,11 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:src="@android:drawable/ic_media_ff"
-        app:layout_constraintBottom_toBottomOf="@+id/playpaue_pb"
+        app:layout_constraintBottom_toBottomOf="@+id/playpause_pb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/playpaue_pb"
-        app:layout_constraintTop_toTopOf="@+id/playpaue_pb"
+        app:layout_constraintStart_toEndOf="@+id/playpause_pb"
+        app:layout_constraintTop_toTopOf="@+id/playpause_pb"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -152,7 +152,7 @@
         android:layout_marginTop="40dp"
         android:clickable="true"
         android:src="@android:drawable/ic_media_rew"
-        app:layout_constraintEnd_toStartOf="@+id/playpaue_pb"
+        app:layout_constraintEnd_toStartOf="@+id/playpause_pb"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trackSeek_sk" />
