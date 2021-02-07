@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.content.res.Resources;
 
 import org.w3c.dom.Text;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -57,6 +64,29 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         pageViewModel.setIndex(index);
 
         initializeMediaPlayer();
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                int globalState = 1;
+                while (true) {
+                    try {
+                        if (mediaPlayer != null) {
+                            if(!tracking){
+                                int mCurrentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                                if(trackSeek_sk != null) trackSeek_sk.setProgress(mCurrentPosition);
+                                updateTimer(mediaPlayer.getCurrentPosition());
+                            }
+                        }
+
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+
+        }.execute();
     }
 
     @Override
@@ -91,6 +121,26 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         rew_pb.setOnClickListener(this);
         playpause_pb.setOnClickListener(this);
         adv_pb.setOnClickListener(this);
+        trackSeek_sk.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    tracking = false;
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    tracking = true;
+                }
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if(mediaPlayer != null && fromUser){
+                        mediaPlayer.seekTo(progress * 1000);
+                        updateTimer(progress*1000);
+                    }
+                }
+            });
 
         return view;
     }
@@ -110,6 +160,7 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
     private EditText sec_tb;
 
     private boolean playingTrack = false;
+    private boolean tracking = false;
 
     @Override
     public void onClick(View v)
@@ -145,6 +196,17 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         }
     }
 
+    private void updateTimer(int timeMS)
+    {
+        String seconds = String.valueOf(timeMS /1000 % 60) ;
+        String minutes = String.valueOf(timeMS /1000 / 60 % 60) ;
+        String hours = String.valueOf(timeMS /1000 / 60 / 60) ;
+        if (seconds.length() == 1) seconds = "0" + seconds;
+        if (minutes.length() == 1) minutes = "0" + minutes;
+        if (hours.length() == 1) hours = "0" + hours;
+        if(lastTime_tb != null) lastTime_tb.setText(hours + ":" + minutes + ":" + seconds);
+    }
+
     private Uri selectedfile;
     MediaPlayer mediaPlayer;
 
@@ -155,12 +217,37 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
             mediaPlayer.prepare();
         }
         catch (Exception e) {}
+
+        initializeSeekbar();
     }
 
     private void initializeMediaPlayer()
     {
+        if(mediaPlayer!=null)
+        {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         mediaPlayer = new MediaPlayer();
-        //mediaPlayer.setAudioAttributes();
+    }
+
+    private void initializeSeekbar()
+    {
+        trackSeek_sk.setMax(mediaPlayer.getDuration()/1000);
+
+        //timer.schedule( new TimerTask()
+        //{
+        //    public void run() {
+        //
+        //    }
+        //}, 0, 60*(1000*1));
+
+        //exec.scheduleAtFixedRate(new Runnable() {
+        //    @Override
+        //    public void run() {
+        //
+        //    }
+        //}, 0, 1, TimeUnit.SECONDS);
     }
 
     @Override
