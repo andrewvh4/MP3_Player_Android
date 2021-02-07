@@ -1,0 +1,4 @@
+Remove tab header
+Implement presets buttons
+change icon
+auto move to next

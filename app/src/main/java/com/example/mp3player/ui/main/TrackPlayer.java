@@ -114,6 +114,11 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         lastTime_tb = (TextView) view.findViewById(R.id.lastTime_tb);
         importTrack_pb = (Button) view.findViewById(R.id.importTrack_pb);
         seek_pb = (Button) view.findViewById(R.id.seek_pb);
+        pb_Settings_1 = (Button) view.findViewById(R.id.pb_Settings_1);
+        pb_Settings_2 = (Button) view.findViewById(R.id.pb_Settings_2);
+        pb_Settings_3 = (Button) view.findViewById(R.id.pb_Settings_3);
+        pb_Settings_4 = (Button) view.findViewById(R.id.pb_Settings_4);
+        pb_Settings_5 = (Button) view.findViewById(R.id.pb_Settings_5);
         rew_pb = (FloatingActionButton) view.findViewById(R.id.rew_pb);
         playpause_pb = (FloatingActionButton) view.findViewById(R.id.playpause_pb);
         adv_pb = (FloatingActionButton) view.findViewById(R.id.adv_pb);
@@ -126,6 +131,11 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
         importTrack_pb.setOnClickListener(this);
         seek_pb.setOnClickListener(this);
         rew_pb.setOnClickListener(this);
+        pb_Settings_1.setOnClickListener(this);
+        pb_Settings_2.setOnClickListener(this);
+        pb_Settings_3.setOnClickListener(this);
+        pb_Settings_4.setOnClickListener(this);
+        pb_Settings_5.setOnClickListener(this);
         playpause_pb.setOnClickListener(this);
         adv_pb.setOnClickListener(this);
         trackSeek_sk.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -149,12 +159,7 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                 }
             });
 
-        mPrefs = getActivity().getSharedPreferences(String.valueOf(m_index), 0);
-        mEditor = mPrefs.edit();
-
-        selectedfile = Uri.parse(mPrefs.getString("CurrentFileUri", ""));
-        updateTimer(mPrefs.getInt("Time", 0));
-        prepareMediaFile();
+        loadPrefs(1);
 
         return view;
     }
@@ -164,6 +169,11 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
     private TextView lastTime_tb;
     private Button importTrack_pb;
     private Button seek_pb;
+    private Button pb_Settings_1;
+    private Button pb_Settings_2;
+    private Button pb_Settings_3;
+    private Button pb_Settings_4;
+    private Button pb_Settings_5;
     private FloatingActionButton rew_pb;
     private FloatingActionButton playpause_pb;
     private FloatingActionButton adv_pb;
@@ -212,6 +222,21 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
                     playingTrack = true;
                 }
                 break;
+            case R.id.pb_Settings_1:
+                loadPrefs(1);
+                break;
+            case R.id.pb_Settings_2:
+                loadPrefs(2);
+                break;
+            case R.id.pb_Settings_3:
+                loadPrefs(3);
+                break;
+            case R.id.pb_Settings_4:
+                loadPrefs(4);
+                break;
+            case R.id.pb_Settings_5:
+                loadPrefs(5);
+                break;
         }
     }
 
@@ -233,6 +258,20 @@ public class TrackPlayer extends Fragment implements View.OnClickListener{
 
     private Uri selectedfile;
     MediaPlayer mediaPlayer;
+
+    private int mPreferences = 1;
+
+    private void loadPrefs(int pref)
+    {
+        mPreferences = pref;
+
+        mPrefs = getActivity().getSharedPreferences(String.valueOf(mPreferences), 0);
+        mEditor = mPrefs.edit();
+
+        selectedfile = Uri.parse(mPrefs.getString("CurrentFileUri", ""));
+        updateTimer(mPrefs.getInt("Time", 0));
+        prepareMediaFile();
+    }
 
     private void prepareMediaFile()
     {

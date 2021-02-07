@@ -86,7 +86,6 @@
         android:inputType="number"
         android:selectAllOnFocus="true"
         android:text="00"
-        app:layout_constraintBottom_toBottomOf="@+id/hour_tb"
         app:layout_constraintEnd_toStartOf="@+id/sec_tb"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/hour_tb"
@@ -153,12 +152,67 @@
         android:id="@+id/rew_pb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         android:clickable="true"
         android:src="@android:drawable/ic_media_rew"
         app:layout_constraintEnd_toStartOf="@+id/playpause_pb"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trackSeek_sk" />
+
+    <Button
+        android:id="@+id/pb_Settings_1"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:text="1"
+        app:layout_constraintEnd_toStartOf="@+id/pb_Settings_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sec_tb" />
+
+    <Button
+        android:id="@+id/pb_Settings_2"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:text="2"
+        app:layout_constraintEnd_toStartOf="@+id/pb_Settings_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pb_Settings_1"
+        app:layout_constraintTop_toBottomOf="@+id/sec_tb" />
+
+    <Button
+        android:id="@+id/pb_Settings_4"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:text="4"
+        app:layout_constraintEnd_toStartOf="@+id/pb_Settings_5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pb_Settings_3"
+        app:layout_constraintTop_toBottomOf="@+id/sec_tb" />
+
+    <Button
+        android:id="@+id/pb_Settings_5"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:text="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pb_Settings_4"
+        app:layout_constraintTop_toBottomOf="@+id/sec_tb" />
+
+    <Button
+        android:id="@+id/pb_Settings_3"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:text="3"
+        app:layout_constraintEnd_toStartOf="@+id/pb_Settings_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pb_Settings_2"
+        app:layout_constraintTop_toBottomOf="@+id/sec_tb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
